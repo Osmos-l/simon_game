@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>simon</title>
+        
+        <style>
+            body {
+                background-color: whitesmoke;
+            }
+            button.start-game {
+                
+            }
+            button {
+                width: 200px;
+                height: 75px;
+                opacity: 0.3;
+                transition: opacity 0.3s;
+            }
+            button.active, button:active {
+                opacity: 1;
+            }
+
+            .bg-red {
+                background-color: red;
+            }
+            .bg-yellow {
+                background-color: yellow;
+            }
+            .bg-purple {
+                background-color: purple;
+            }
+            .bg-green {
+                background-color: green;
+            }
+        </style>
+    </head>
+    <body>
+        <button class="start-game" id="start">Start game</button>
+        <div class="gameboard" id="gameboard">
+
+        </div>
+    </body>
+    <script src="js/button.js" ></script>
+    <script src="js/game.js" ></script>
+    <script src="js/config.js" ></script>
+    <script src="js/main.js" ></script>
+</html>
