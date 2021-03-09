@@ -1,0 +1,19 @@
+.container {
+    width: 75%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 5px 5px;
+    box-shadow: 10px 5px 5px rgb( 0, 0, 0, 0.3 );
+    border-radius: 5px;
+}
+
+.container .gameboard-info {
+    font-size: xx-large;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container .gameboard-info span {
+    font-size: smaller;
+    font-family: 'Roboto', sans-serif;
+    font-style: italic;
+}

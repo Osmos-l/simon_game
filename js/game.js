@@ -3,60 +3,67 @@ function randomIntFromInterval(min, max) { // min and max included
   }
 
 class Gameboard {
-    #actionsToCopy
+    #toReproduceClicks
 
     #buttons
 
-    #waitingUserAction
+    #waitingForUserAction
 
-    #userActionsIndex // To gap with actionsToCopy
+    #userActionsIndex // To gap with toReproduceClicks
 
-    #userAction      // To compare with actionsToCopy where actionsToCopy.key == userActionsIndex
+    #userAction      // To compare with toReproduceClicks where toReproduceClicks.key == userActionsIndex
 
     #loose
+
+    #score
 
     constructor( element, config ) {
         this.element = element;
         this.config = config;
 
-        this.#actionsToCopy = [];
+        this.#init();
+    }
+    
+    #init() {
+        this.#toReproduceClicks = [];
         this.#buttons = [];
-        this.#waitingUserAction = false;
+        this.#waitingForUserAction = false;
         this.#loose = false;
 
         this.#userActionsIndex = 0;
         this.#userAction = 0;
+
+        this.#score = 0;
+
     }
 
     start() {
+        this.onScoreUpdate( this.#score );
         this.#think();
     }
 
     #think() {
 
-        if ( this.#waitingUserAction ) {
-            // Sleep
-        } else {
+        if ( this.#loose === false && 
+             this.#waitingForUserAction === false ) {
             this.#userActionsIndex = 0;
             this.#generateRandomClick();
         }
 
-        
     }
 
     userMakeAction() {
         
         // If user click on the right button at the right moment
-        if ( this.#actionsToCopy[this.#userActionsIndex] !== null && 
-            this.#actionsToCopy[this.#userActionsIndex] == this.#userAction ) {
+        if ( this.#toReproduceClicks[this.#userActionsIndex] !== null && 
+            this.#toReproduceClicks[this.#userActionsIndex] == this.#userAction ) {
             
-            
-
             // If user do all the clicks
-            if ( this.#userActionsIndex == this.#actionsToCopy.length - 1 ) {
-                this.#waitingUserAction = false;
+            if ( this.#userActionsIndex == this.#toReproduceClicks.length - 1 ) {
+                this.#waitingForUserAction = false;
                 this.#userActionsIndex = 0;
-                console.log( "User complete a stage !");
+
+               this.#updateScore( this.#toReproduceClicks.length * 1.5 );
             } else {
                 this.#userActionsIndex++;
             }
@@ -66,17 +73,17 @@ class Gameboard {
                 self.#think()
             }, 500 );
         } else {
-            console.log( "DEAD" );
+            this.#end();
         }
 
         
     }
 
     #generateRandomClick() {
-        let toExecuteKey = randomIntFromInterval( 0, 4 );
+        let toExecuteKey = randomIntFromInterval( 0, this.#buttons.length - 1 );
         let toExecute = this.#buttons[ toExecuteKey ];
         
-        if ( toExecute === null ) {
+        if ( toExecute === undefined ) {
             return false;
         }
 
@@ -84,41 +91,57 @@ class Gameboard {
             toExecute.classList = [];
         }
 
-
-        // TODO: Patch error when button is already hovered
-
         toExecute.classList.add("active");
         setTimeout( function() {
             toExecute.classList.remove("active");
         }, 500 );
 
-        this.#actionsToCopy.push( toExecuteKey );
-        console.log( this.#actionsToCopy );
-        this.#waitingUserAction = true;
+        this.#toReproduceClicks.push( toExecuteKey );
+        console.log( this.#toReproduceClicks );
+        this.#waitingForUserAction = true;
     }
 
     generate() {
+
         let self = this;
 
         for( let k in this.config.buttons ) {
             let button = new Button( config.buttons[k] );
             button = button.generate();
             
-            button.addEventListener("click", function(event) {
+            button.onClick = () => {
                 self.#userAction = k;
                 self.userMakeAction();
-            } );
+            };
 
             this.element.append( button );
 
             this.#buttons[k] = button;
         }
 
-        console.log( this.#buttons );
         this.start();
     }
 
-    end() {
+    retry() {
+        this.#init();
+        this.generate();
+    }
 
+    #end() {
+        console.log( "DEAD!" );
+        this.onEnd();
+    }
+
+    onEnd() {
+        // To override
+    }
+
+    #updateScore( toAdd ) {
+        this.#score = this.#score + toAdd;
+        this.onScoreUpdate( this.#score );
+    }
+
+    onScoreUpdate() {
+        // To override
     }
 }

@@ -1,0 +1,9 @@
+button {
+    width: 200px;
+    height: 75px;
+    opacity: 0.3;
+    transition: opacity 0.3s;
+}
+button.active, button:active {
+    opacity: 1;
+}
