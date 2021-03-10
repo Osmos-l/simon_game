@@ -1,9 +1,56 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-@import "./_button.css";
-@import "./_utility.css";
-@import "./_container.css";
+/* CONTAINER */
+.container {
+    width: 75%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 5px 5px;
+    box-shadow: 10px 5px 5px rgb( 0, 0, 0, 0.3 );
+    border-radius: 5px;
+}
 
+.container .gameboard-info {
+    font-size: xx-large;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container .gameboard-info span {
+    font-size: smaller;
+    font-family: 'Roboto', sans-serif;
+    font-style: italic;
+}
+
+/* UTILITY */
+.bg-red {
+    background-color: red;
+}
+.bg-yellow {
+    background-color: yellow;
+}
+.bg-purple {
+    background-color: purple;
+}
+.bg-green {
+    background-color: green;
+}
+
+/* BUTTON */
+button {
+    width: 200px;
+    height: 75px;
+    opacity: 0.3;
+    transition: opacity 0.3s;
+}
+button.active, button:active {
+    opacity: 1;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+/* MAIN */
 body {
     background-color: whitesmoke;
 }
